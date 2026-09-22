@@ -1,6 +1,10 @@
-"""Parse a Kaufland digital-receipt PDF into a :class:`Receipt`.
+"""Parse a receipt PDF into a :class:`Receipt`.
 
-The app's "als PDF speichern" export is a real text-layer PDF, so we extract
+:func:`parse_text` is the retailer dispatcher: it recognises which chain
+printed the receipt and hands off to that chain's parser -- REWE lives in
+:mod:`parse_rewe`; Kaufland's rules are the rest of this module.
+
+Kaufland's "als PDF speichern" export is a real text-layer PDF, so we extract
 text with :mod:`pypdf` (no OCR) and apply the layout rules below.
 
 The rules were derived from and validated against real digital receipts
@@ -253,23 +257,23 @@ def _parse_line_items(lines: list[str]) -> tuple[list[LineItem], Decimal | None]
 
 
 def parse_text(text: str, *, source_file: str | None = None, label: str = "receipt") -> Receipt:
-    """Parse an already-extracted receipt text layer into a :class:`Receipt`.
+    """Parse an already-extracted receipt text layer into a :class:`Receipt`,
+    whichever supported retailer printed it.
 
     Split out from :func:`parse_pdf` so the format logic is testable against a
     committed text fixture, with no PDF or filesystem involved.
 
-    Raises ``ValueError`` if the text is not a recognisable Kaufland receipt or
-    if the total/date cannot be found — better to fail loudly than to store a
-    half-parsed receipt.
+    Raises ``ValueError`` if the text is not a recognisable Kaufland or REWE
+    receipt or if the total/date cannot be found — better to fail loudly than
+    to store a half-parsed receipt.
     """
-    lines = [ln.strip() for ln in text.splitlines()]
-
-    # Receipts from before roughly July 2024 are exported by the app as its
-    # rendered "Receipt Copy" screen: every row is an image tile, no text
-    # layer at all, so pypdf hands back "". (Observed boundary on real data:
-    # last image-only receipt 2024-06-13, first text-based one 2024-07-20.)
-    # Say so, instead of letting that fall through to the "not a Kaufland
-    # receipt" check below and sending the user to look for the wrong problem.
+    # Kaufland receipts from before roughly July 2024 are exported by the app
+    # as its rendered "Receipt Copy" screen: every row is an image tile, no
+    # text layer at all, so pypdf hands back "". (Observed boundary on real
+    # data: last image-only receipt 2024-06-13, first text-based one
+    # 2024-07-20.) Say so, instead of letting that fall through to the "not a
+    # recognised receipt" check below and sending the user to look for the
+    # wrong problem.
     if not text.strip():
         raise ValueError(
             f"{label}: PDF has no text layer (image-only). Receipts from before "
@@ -277,8 +281,19 @@ def parse_text(text: str, *, source_file: str | None = None, label: str = "recei
             "parsed yet; receipts from July 2024 onward are text-based and work."
         )
 
+    # Imported here, not at module level: parse_rewe borrows the number/size
+    # helpers from this module, so a top-level import would be circular.
+    from . import parse_rewe
+
+    if parse_rewe.is_rewe(text):
+        return parse_rewe.parse_text(text, source_file=source_file, label=label)
     if not is_kaufland(text):
-        raise ValueError(f"{label}: does not look like a Kaufland receipt")
+        raise ValueError(f"{label}: does not look like a Kaufland or REWE receipt")
+    return _parse_kaufland(text, source_file=source_file, label=label)
+
+
+def _parse_kaufland(text: str, *, source_file: str | None, label: str) -> Receipt:
+    lines = [ln.strip() for ln in text.splitlines()]
 
     purchased_at = _parse_datetime(text)
     if purchased_at is None:

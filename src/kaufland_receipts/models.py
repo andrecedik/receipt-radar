@@ -25,7 +25,7 @@ class LineItem(BaseModel):
     quantity: Decimal = Decimal(1)
     unit_price: Decimal | None = None  # price per unit, if the receipt shows it
     total_price: Decimal  # what this line actually cost (unit_price * quantity)
-    tax_class: str | None = None  # Kaufland prints "A" (7%) or "B" (19%)
+    tax_class: str | None = None  # "A" (19%) or "B" (7%); None marks a discount line
     article_number: str | None = None  # stable key for price history, if available
 
     # Pack size / purchased weight, e.g. "750g" parsed out of the name, or the
@@ -39,7 +39,7 @@ class LineItem(BaseModel):
 class Store(BaseModel):
     """The store a receipt was issued by."""
 
-    name: str = "Kaufland"
+    name: str = "Kaufland"  # or "REWE" -- see parse_rewe.py
     street: str | None = None
     city: str | None = None
     postal_code: str | None = None

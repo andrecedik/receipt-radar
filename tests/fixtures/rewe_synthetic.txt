@@ -1,0 +1,55 @@
+ 
+ 
+ 
+          R E W E - Getränkemarkt          
+             Teststraße 12             
+            12345 Teststadt            
+         Tel.: 01234/567890         
+         UID Nr.: DE000000000         
+                                   EUR
+TESTBROT                         0,79 B
+TESTAPFEL                        3,58 B
+             2 Stk x    1,79
+TESTBANANE                       1,25 B
+         0,500 kg x    2,50 EUR/kg
+TESTLIMO 0,85L                   1,39 A
+PFAND 0,25 EURO                  0,25 A *
+LEERGUT EINWEG                  -0,25 A *
+TESTTEE                          1,99 A
+ GRATIS Testtee                 -1,99 A
+TESTBIER                         5,49 A
+ --------------------------------------
+ SUMME                   EUR     12,50
+ ======================================
+ Geg. VISA               EUR     12,50
+                     Steuer  %          Netto        Steuer        Brutto
+ A=  19,0%           5,79          1,10          6,89
+ B=   7,0%           5,24          0,37          5,61
+ Gesamtbetrag       11,03          1,47         12,50
+                    TSE-Signatur:        AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        TSE-Signaturzähler:  1               
+        TSE-Transaktion:     1               
+    TSE-Start:           2026-05-02T21:24:51.000 
+    TSE-Stop:            2026-05-02T21:25:19.000 
+    Seriennnummer Kasse: REWE:00:00:00:00:00:00:00
+  02.05.2026     21:25     Bon-Nr.:1770
+  Markt:3308     Kasse:1   Bed.:525252
+                    
+ ****************************************
+Entdecke und aktiviere alle REWE Bonus-
+    Vorteile jetzt in der REWE App!
+                    
+   Aktuelles Bonus-Guthaben: 0,29 EUR
+                    
+   Keine Rabatte oder Bonus-Guthaben
+   auf mit * gekennzeichnete Produkte
+                    
+ ****************************************
+----------------------------------------
+   Deine zusätzlichen Vorteile heute:
+ Sonstige Vorteile                1,99
+ -------------------------------------
+ Summe                            1,99
+                    
+            REWE Markt GmbH           
+              www.rewe.de             

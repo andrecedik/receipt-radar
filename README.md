@@ -1,7 +1,7 @@
 # kaufland-receipts
 
-Turn your Kaufland digital receipts (Digitale Kassenbons) into structured,
-self-hosted data. Find out whether that "sale" sticker is actually a better
+Turn your Kaufland digital receipts (Digitale Kassenbons) and REWE eBons
+into structured, self-hosted data. Find out whether that "sale" sticker is actually a better
 price than what you already paid.
 
 > Unofficial and unaffiliated with Kaufland. This is a personal-data /
@@ -75,8 +75,8 @@ tells you whether it's a genuine reduction or a sale in name only.
 ### Total Spend Aggregation
 
 Every parsed receipt rolls up into a running spend total across every store
-you've fed receipts from. Currently Kaufland-only (see
-[What it can't do yet](#what-it-cant-do-yet)), but the data model and UI
+you've fed receipts from. Kaufland and REWE today (see
+[What it can't do yet](#what-it-cant-do-yet)); the data model and UI
 don't assume a single retailer.
 
 ### Grocy Stock Push
@@ -92,10 +92,12 @@ resolved.
 
 ## What it can't do yet
 
-- **Kaufland only, German only.** The parser handles Kaufland's printed
-  receipt format specifically; no other retailer is supported yet, and
-  Kaufland only operates in Germany.
-- **Only receipts from July 2024 onward can be parsed.** Older ones are
+- **Kaufland and REWE only, German only.** The parsers handle the printed
+  formats of the Kaufland digital receipt and the REWE eBon (the
+  `stationary-ebon-<uuid>.pdf` download from the REWE app or rewe.de); no
+  other retailer is supported yet, and both chains only issue these in
+  Germany.
+- **Only Kaufland receipts from July 2024 onward can be parsed.** Older ones are
   exported by the Kaufland app as its rendered "Receipt Copy" screen, an
   image-only PDF with no text layer (the switch happened in the second half
   of June 2024). The parser is text-based (no OCR), so it rejects those with
@@ -126,8 +128,8 @@ resolved.
 - Automated receipt sync: no more manual PDF export, once the app's
   certificate pinning is worked around
 - Home Assistant notification hook for genuine-discount alerts
-- Parsers for other German grocers (Rewe, Edeka, Lidl), extending Total
-  Spend Aggregation beyond Kaufland
+- Parsers for other German grocers (Edeka, Lidl), extending Total Spend
+  Aggregation beyond Kaufland and REWE
 
 **The bigger vision** — and honestly, the reason this project exists at all:
 grocery prices vary by store and region in ways no single shopper can see on

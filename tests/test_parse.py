@@ -125,3 +125,31 @@ def test_is_kaufland_when_the_word_only_appears_in_the_footer():
         + ["  Kaufland Card XTRA:          xxxxx0000"]
     )
     assert is_kaufland(text)
+
+
+# --- retailer dispatch -------------------------------------------------------
+
+REWE_FIXTURE = (Path(__file__).parent / "fixtures" / "rewe_synthetic.txt").read_text("utf-8")
+
+
+def test_dispatches_rewe_receipts_to_the_rewe_parser():
+    r = parse_text(REWE_FIXTURE)
+    assert r.store.name == "REWE"
+    assert r.receipt_id.startswith("rewe-")
+    assert r.totals_match()
+
+
+def test_kaufland_receipts_still_parse_through_the_dispatcher():
+    r = parse_text(FIXTURE)
+    assert r.store.name == "Kaufland"
+    assert r.receipt_id.startswith("kaufland-")
+
+
+def test_unrecognised_receipt_names_both_retailers():
+    with pytest.raises(ValueError, match="Kaufland or REWE"):
+        parse_text("Some other shop\nSumme 5,00\nDatum:01.01.26 Zeit: 10:00:00 Bon:1")
+
+
+def test_kaufland_errors_carry_the_file_label():
+    with pytest.raises(ValueError, match=r"^bad\.pdf: could not find the total"):
+        parse_text("Kaufland - Teststraße 1\nDatum:01.01.26 Zeit: 10:00:00 Bon:1", label="bad.pdf")
