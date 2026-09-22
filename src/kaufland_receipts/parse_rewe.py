@@ -2,17 +2,17 @@
 
 REWE's eBon (the "stationary-ebon-<uuid>.pdf" download from the REWE app /
 rewe.de) is a real text-layer PDF, so the same :mod:`pypdf` extraction as
-for Kaufland applies. The layout rules below were derived from six real eBons
-(2025-07 .. 2026-07, incl. a Getränkemarkt and a franchise partner store);
-parsed line items reconcile exactly to the printed ``SUMME`` on every one.
+for Kaufland applies. The layout rules below were derived from seven real
+eBons (2025-04 .. 2026-07, incl. a Getränkemarkt and a franchise partner
+store); parsed line items reconcile exactly to the printed ``SUMME`` on every
+one.
 Notable REWE specifics, and where they differ from Kaufland:
 
 * The item region runs from a bare ``EUR`` column header to ``SUMME``.
   Tax classes are ``A`` = 19 % and ``B`` = 7 %, like Kaufland.
 * A multi-unit item prints its total first and the quantity *after* it, on
   an indented continuation line: ``NAME  TOTAL TAX`` / ``2 Stk x  1,79``.
-  Weighed items follow the same shape with ``0,500 kg x  2,50 EUR/kg`` (that
-  variant is REWE's documented format but not yet seen on a real sample).
+  Weighed items follow the same shape with ``0,292 kg x  2,22 EUR/kg``.
 * Pfand and Leergut lines carry a trailing ``*`` ("no Bonus on * items"),
   which is stripped; they stay ordinary taxed line items.
 * A per-item discount (``GRATIS ...``, promo Rabatt) is printed *with* a tax
