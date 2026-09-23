@@ -44,6 +44,14 @@ _Avoid_: Open source (ambiguous about scope), SaaS repo (implies it already exis
 The self-hosted/home-automation community (r/selfhosted, r/homeassistant, r/grocy) chosen for validating Price Integrity Check and Total Spend Aggregation, instead of general Kaufland shoppers. See `docs/adr/0002-initial-audience-is-selfhosted-ha-niche.md`.
 _Avoid_: Users, customers (when the self-hosted/HA-specific audience is meant)
 
+**Retailer Parser**:
+One retailer chain's receipt layout, expressed as the ability to recognise that chain's receipts and read them into line items that reconcile against the printed total. One per chain — supporting a new retailer means adding one, not changing the existing ones.
+_Avoid_: Parser (unqualified, when a specific retailer's module is meant), retailer support
+
+**Receipt Source**:
+Where a receipt reaches the tool from. A Retailer Parser over a PDF the user exported themselves is always a retailer's base source; a vendor API (Lidl Plus, Kaufland's receipt endpoints) is an accelerator added on top of one, never instead of it — an API can be withdrawn or have its auth broken from outside, an already-exported receipt cannot. See `docs/adr/0006-retailer-breadth-is-the-conversion-lever.md`.
+_Avoid_: Integration, ingestion path (when the durability ordering is the point)
+
 **Folder Watch**:
 The Mac-native ingestion path — `kaufland watch` polls a local iCloud Drive folder for new receipt PDFs. Depends on macOS/iCloud filesystem integration; not available in the Docker/NAS context.
 _Avoid_: Watcher, ingestion (when a specific mechanism is meant)

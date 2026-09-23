@@ -1,6 +1,6 @@
 # Initial audience is the self-hosted/home-automation niche, not general consumers
 
-**Status:** accepted
+**Status:** accepted — the parser-sequencing consequence below is superseded by `docs/adr/0006-retailer-breadth-is-the-conversion-lever.md`; the audience choice, channel sequencing and success metric stand.
 
 We decided the initial target audience for the **Self-Hosted Distribution** MVP is the self-hosted/home-automation community (r/selfhosted, r/homeassistant, r/grocy) rather than general Kaufland shoppers. This audience already runs Docker-based NAS setups, already trusts self-hosted tools with sensitive-ish personal data, and already has a stated need for grocery/spend tracking (it's why Grocy exists) — making it a sharper, more reachable wedge for validating whether **Price Integrity Check** and **Total Spend Aggregation** are worth anything to anyone besides the author.
 
@@ -11,7 +11,7 @@ This choice drives two concrete build priorities ahead of further parser work:
 
 ## Consequences
 
-- Rewe/Edeka/Lidl multi-retailer parsing (see `CONTEXT.md`'s **Total Spend Aggregation**) is not the next priority — Docker packaging and Grocy/HA integration are, since they're what make the Kaufland-only MVP appealing to the chosen validation audience.
+- ~~Rewe/Edeka/Lidl multi-retailer parsing (see `CONTEXT.md`'s **Total Spend Aggregation**) is not the next priority~~ **(superseded by ADR 0006 — retailer breadth is now the next priority; both gates below shipped)** — Docker packaging and Grocy/HA integration are, since they're what make the Kaufland-only MVP appealing to the chosen validation audience.
 - Renaming the project (currently `kaufland-receipts`) is deferred until this audience bet is validated — see the project's open renaming question.
 - Revisit this decision if outreach to these communities doesn't produce real installs/usage — the audience bet itself would need reconsidering, not just the packaging/integration work.
 - **Launch channel sequencing:** r/selfhosted and r/grocy are wave one — both audiences are served by what ships at launch (Docker packaging + Grocy Stock Push). r/homeassistant moves to wave two, deferred until HA Notification Hook ships, since launching there without it undersells to an audience that came specifically for HA integration.
