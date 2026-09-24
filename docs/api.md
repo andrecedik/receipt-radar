@@ -58,28 +58,57 @@ Required headers observed: `authorization: Bearer <jwt>`, `app-version: 6.15`,
 | GET | `/accounts/self` | returns `hashed_number`, `saldo`, `membershipStatus` |
 | GET | `/carts/self` | shop cart summary |
 
-## The missing piece
+## The missing piece — filled in 2026-09-24, via a real app's flow (not probed)
 
-The receipt list/detail endpoints on `app.kaufland.net` were **not observed**,
-because that host is pinned. Obtaining them requires unpinning the app on a
-device we control — the plan is an **Android emulator + Frida** SSL-unpinning
-session (nothing done to the physical iPhone). No endpoint guessing/brute-forcing.
+A r/grocy commenter (`vicegold`) DM'd endpoint details he recovered from the
+real Kaufland app, in reply to a request sent 2026-09-23 (see the project hub
+in the me-brain vault for the thread). Per the 2026-08-21 rule, this is
+accepted as-is — someone else's own app traffic, not a guess — and nothing
+here has been probed or verified against a live account yet.
 
-### Next-phase checklist (Frida)
-1. Android emulator (Google-APIs image, writable system) + Kaufland APK.
-2. `frida` + an SSL-unpinning script → route through mitmproxy.
-3. Open Digitale Kassenbons; capture list + detail + any PDF endpoint on
-   `app.kaufland.net`, plus the cidaas `/authorize` + `/token` flow.
-4. Fill in the table below and build `auth.py` (cidaas OAuth2 + refresh) and
-   `api.py` (`list_receipts`, `get_receipt`, `get_pdf`) emitting the same
-   `models.Receipt` the PDF path already produces.
+**The receipts backend is not `app.kaufland.net`.** It's a separate host,
+`p.crm-dynamics.schwarz` — a Schwarz-Group CRM system, not the loyalty backend
+this doc originally targeted. `app.kaufland.net` may still be what the app
+itself calls (proxying through), or the pinning capture simply hit the wrong
+host for this feature; unresolved either way, and doesn't matter for a client
+that talks to `p.crm-dynamics.schwarz` directly.
 
-| Method | Path (`app.kaufland.net`) | Purpose |
+**Auth**: same cidaas IdP as above, confirmed by a matching `client_id`
+(`72a21a5f-f5fd-4b0f-a292-3674663e3ac1` — identical to the one decoded from
+the shop-BFF capture, so this is the same public client, not a different app).
+Authorization Code + PKCE, no client secret:
+
+| Purpose | Endpoint |
+|---|---|
+| Authorize | `https://account.kaufland.com/authz-srv/authz` |
+| Token | `https://account.kaufland.com/token-srv/token` |
+
+Redirect URI is the iOS app's own scheme (`com.kaufland.iosapp://oauth/callback`),
+so this only works headlessly if a client can complete one interactive
+browser login and then rely on the `offline_access` refresh token this doc
+already confirmed is granted. Vicegold's own note: authorization codes expire
+fast — re-run the flow if the exchange comes back invalid/expired.
+
+**Receipts endpoint**:
+
+| Method | Path | Notes |
 |---|---|---|
-| ? | ? | list receipts |
-| ? | ? | receipt detail |
-| ? | ? | receipt PDF |
+| GET | `/api/v2/customers/{username}/transactions` | Query params: `start`, `limit`, `country`, `version`. Headers: `Authorization: Bearer <token>`, `app-platform`, `app-version`, `accept`. |
 
-**Watch for** Play-Integrity / device attestation on `app.kaufland.net`; the app
-also carries Kaufland Pay, so some endpoints may require an attested client.
-```
+Response shape, from vicegold's example script — a receipt/transaction has
+`id`, `timestamp`, `receiptNumber`, `sum`, `saving`, `currency`, a `store`
+object (`id`, `name`, `city`), and a `positions` array. The example script's
+own sample only showed `name`, `quantity`, `unitPrice` (cents) per position.
+**Unconfirmed discrepancy:** vicegold's earlier r/grocy screenshot (2026-09-22)
+showed `gtin`, `taxClassItem` and a top-level `receiptBarcode` that the script
+doesn't demonstrate — worth confirming against a real account before relying
+on GTINs being present on every line.
+
+### What's still open
+- No client has been written or tested against this — accepted as reported,
+  not yet verified end-to-end.
+- Whether `gtin`/`taxClassItem` are reliably present (see discrepancy above).
+- Rate limits / attestation requirements: none observed, none mentioned.
+- Per ADR 0006, this is a **Receipt Source accelerator layered on the Kaufland
+  parser**, not a replacement, and not on the critical path for REWE/EDEKA/Lidl
+  — this section is captured for when it's picked up, not a signal it's next.
