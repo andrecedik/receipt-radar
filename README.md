@@ -39,8 +39,8 @@ infrastructure, full stop.
 For a NAS or any Docker host:
 
 ```sh
-git clone https://github.com/andrecedik/kaufland-receipts.git
-cd kaufland-receipts
+git clone https://github.com/andrecedik/receipt-radar.git
+cd receipt-radar
 docker compose up -d
 ```
 
