@@ -1,4 +1,4 @@
-"""Command-line entrypoint: ``kaufland <command>``."""
+"""Command-line entrypoint: ``receipt-radar <command>``."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ from .watch import DEFAULT_WATCH_DIR, scan_once
 
 app = typer.Typer(
     add_completion=False,
-    help="Pull Kaufland digital receipts into local structured data.",
+    help="Pull your own grocery digital receipts into local structured data.",
 )
 
 
@@ -155,7 +155,7 @@ def web_data(
     development: Vite serves public/ live, so a re-export already shows up
     on the next browser refresh with no rebuild step. Add --watch and even
     the re-export happens on its own as you ingest receipts -- run
-    `kaufland web-data --watch` and `npm run dev` side by side and a
+    `receipt-radar web-data --watch` and `npm run dev` side by side and a
     refresh always shows the latest data.
     """
     store = _store()

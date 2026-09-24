@@ -1,6 +1,6 @@
 """Idempotent local cache of receipts.
 
-One JSON file per receipt under ``~/.local/share/kaufland-receipts/receipts/``,
+One JSON file per receipt under ``~/.local/share/receipt-radar/receipts/``,
 named by ``receipt_id``. Re-ingesting a receipt that is already stored is a
 no-op, so both the PDF watcher and any future API sync can be run repeatedly
 without creating duplicates.
@@ -20,7 +20,7 @@ from .models import Receipt
 def default_data_dir() -> Path:
     """Resolve the cache directory, honouring XDG_DATA_HOME."""
     base = os.environ.get("XDG_DATA_HOME") or (Path.home() / ".local" / "share")
-    return Path(base) / "kaufland-receipts"
+    return Path(base) / "receipt-radar"
 
 
 class ReceiptStore:

@@ -1,4 +1,4 @@
-# Kaufland Receipts — Price Intelligence
+# Receipt Radar — Price Intelligence
 
 A personal tool that parses your own grocery digital receipts into structured spend and price-history data, with an eventual (deferred) ambition to compare prices across retailers and locations using crowd-contributed data.
 
@@ -53,7 +53,7 @@ Where a receipt reaches the tool from. A Retailer Parser over a PDF the user exp
 _Avoid_: Integration, ingestion path (when the durability ordering is the point)
 
 **Folder Watch**:
-The Mac-native ingestion path — `kaufland watch` polls a local iCloud Drive folder for new receipt PDFs. Depends on macOS/iCloud filesystem integration; not available in the Docker/NAS context.
+The Mac-native ingestion path — `receipt-radar watch` polls a local iCloud Drive folder for new receipt PDFs. Depends on macOS/iCloud filesystem integration; not available in the Docker/NAS context.
 _Avoid_: Watcher, ingestion (when a specific mechanism is meant)
 
 **Web Upload**:

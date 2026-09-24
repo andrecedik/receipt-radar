@@ -90,7 +90,7 @@ def export_web_data(receipts: list[Receipt], web_dir: Path) -> tuple[int, int]:
     receipts.json lives under public/, not src/, so the built app fetches it
     at runtime instead of Vite inlining it into the JS bundle -- otherwise
     the shipped chunk size grows with every receipt ever ingested. Shared by
-    the one-shot and ``--watch`` paths of ``kaufland web-data``.
+    the one-shot and ``--watch`` paths of ``receipt-radar web-data``.
 
     Returns ``(receipts written, PDFs copied)``.
     """

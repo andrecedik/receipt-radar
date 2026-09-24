@@ -6,8 +6,8 @@ directly, so nothing here depends on samples/ (gitignored real receipts)."""
 from datetime import datetime
 from decimal import Decimal
 
-from kaufland_receipts.models import LineItem, Receipt, Store
-from kaufland_receipts.price_integrity import attach_item_discounts, compute_verdicts
+from receipt_radar.models import LineItem, Receipt, Store
+from receipt_radar.price_integrity import attach_item_discounts, compute_verdicts
 
 
 def _product(name="Milch", total_price="2.00", quantity="1", tax_class="B") -> LineItem:

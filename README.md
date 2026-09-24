@@ -1,4 +1,4 @@
-# kaufland-receipts
+# receipt-radar
 
 Turn your Kaufland digital receipts (Digitale Kassenbons) and REWE eBons
 into structured, self-hosted data. Find out whether that "sale" sticker is actually a better
@@ -176,7 +176,7 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 Or a one-off image for a specific platform:
 
 ```sh
-docker build --platform linux/amd64 -t kaufland-receipts .   # or linux/arm64
+docker build --platform linux/amd64 -t receipt-radar .   # or linux/arm64
 ```
 
 ### Alternative ingestion: Folder Watch (macOS + iCloud only)
@@ -191,12 +191,12 @@ through the browser:
 2. On the Mac:
 
    ```sh
-   uv run kaufland watch            # check once, ingest new PDFs, exit
-   uv run kaufland watch --no-once  # or keep polling in the background
+   uv run receipt-radar watch            # check once, ingest new PDFs, exit
+   uv run receipt-radar watch --no-once  # or keep polling in the background
    ```
 
 Receipts are cached as one JSON file each under
-`~/.local/share/kaufland-receipts/receipts/`. Ingestion is idempotent: safe
+`~/.local/share/receipt-radar/receipts/`. Ingestion is idempotent: safe
 to re-run `watch`/`ingest` freely.
 
 ## Development
@@ -207,20 +207,20 @@ uv run pytest      # core logic; no PDF or network needed
 
 cd web
 npm install
-npm run dev        # http://localhost:5173, proxies /api to a local `kaufland serve`
+npm run dev        # http://localhost:5173, proxies /api to a local `receipt-radar serve`
 npm run test
 npm run lint
 ```
 
 Running without Docker, the CLI itself covers everything the web UI does
-and more. Run `uv run kaufland --help` for the full list, or:
+and more. Run `uv run receipt-radar --help` for the full list, or:
 
 ```sh
-uv run kaufland ingest ~/path/to/a-receipt.pdf
-uv run kaufland list                       # what's stored
-uv run kaufland export --format csv -o export.csv
-uv run kaufland summary                    # monthly rollup (Markdown)
-uv run kaufland serve --web-dir web        # local API server, for `npm run dev` above
+uv run receipt-radar ingest ~/path/to/a-receipt.pdf
+uv run receipt-radar list                       # what's stored
+uv run receipt-radar export --format csv -o export.csv
+uv run receipt-radar summary                    # monthly rollup (Markdown)
+uv run receipt-radar serve --web-dir web        # local API server, for `npm run dev` above
 ```
 
 See [`web/README.md`](web/README.md) for the frontend build/preview flow in

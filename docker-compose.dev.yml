@@ -1,7 +1,7 @@
 services:
-  kaufland-receipts:
+  receipt-radar:
     # Overrides the published image with a local build -- use for developing
-    # against a container instead of pulling ghcr.io/andrecedik/kaufland-receipts.
+    # against a container instead of pulling ghcr.io/andrecedik/receipt-radar.
     #   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
     build: .
-    image: kaufland-receipts:dev
+    image: receipt-radar:dev

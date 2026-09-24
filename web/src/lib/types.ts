@@ -1,5 +1,5 @@
-// Mirrors kaufland_receipts.models — decimals arrive as strings from
-// `kaufland export --format json` (pydantic's JSON mode) and are parsed to
+// Mirrors receipt_radar.models — decimals arrive as strings from
+// `receipt-radar export --format json` (pydantic's JSON mode) and are parsed to
 // numbers here; this is a read-only display layer, not a place that needs
 // arbitrary-precision arithmetic.
 

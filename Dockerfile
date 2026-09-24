@@ -33,4 +33,4 @@ EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
     CMD python3 -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2)" || exit 1
 
-CMD ["kaufland", "serve", "--web-dir", "web", "--host", "0.0.0.0"]
+CMD ["receipt-radar", "serve", "--web-dir", "web", "--host", "0.0.0.0"]

@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from kaufland_receipts.parse_rewe import is_rewe, parse_text
+from receipt_radar.parse_rewe import is_rewe, parse_text
 
 FIXTURE = (Path(__file__).parent / "fixtures" / "rewe_synthetic.txt").read_text("utf-8")
 

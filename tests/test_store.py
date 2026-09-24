@@ -5,14 +5,14 @@ import json
 from datetime import datetime
 from decimal import Decimal
 
-from kaufland_receipts.export import (
+from receipt_radar.export import (
     append_price_history,
     export_web_data,
     monthly_summary_markdown,
     to_csv,
 )
-from kaufland_receipts.models import LineItem, Receipt, Store
-from kaufland_receipts.store import ReceiptStore
+from receipt_radar.models import LineItem, Receipt, Store
+from receipt_radar.store import ReceiptStore
 
 
 def _receipt(rid="kaufland-1", total="3.50", when="2026-08-10T14:30:00") -> Receipt:

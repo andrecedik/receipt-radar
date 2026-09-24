@@ -7,7 +7,7 @@ from decimal import Decimal
 import httpx
 import pytest
 
-from kaufland_receipts.grocy_client import GrocyClient
+from receipt_radar.grocy_client import GrocyClient
 
 
 def _client(handler) -> GrocyClient:

@@ -5,14 +5,14 @@ Pure filesystem persistence -- no network, no real Grocy instance."""
 from datetime import datetime
 from decimal import Decimal
 
-from kaufland_receipts.grocy_store import (
+from receipt_radar.grocy_store import (
     GrocyProductDefaults,
     GrocyStore,
     LineItemPushState,
     ProductMapping,
     push_readiness,
 )
-from kaufland_receipts.models import LineItem, Receipt, Store
+from receipt_radar.models import LineItem, Receipt, Store
 
 
 def _receipt(line_names: list[str]) -> Receipt:

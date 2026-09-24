@@ -1,7 +1,7 @@
 [project]
-name = "kaufland-receipts"
+name = "receipt-radar"
 version = "0.1.0"
-description = "Pull your own Kaufland digital receipts into local structured data."
+description = "Pull your own grocery digital receipts into local structured data."
 readme = "README.md"
 authors = [
     { name = "André Cedik", email = "andre.cedik@gmail.com" }
@@ -18,8 +18,7 @@ dependencies = [
 ]
 
 [project.scripts]
-kaufland = "kaufland_receipts.cli:app"
-kaufland-receipts = "kaufland_receipts.cli:app"
+receipt-radar = "receipt_radar.cli:app"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]

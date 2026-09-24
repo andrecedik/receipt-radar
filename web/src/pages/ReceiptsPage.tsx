@@ -58,7 +58,7 @@ export function ReceiptsPage() {
 
   return (
     <>
-      <h1 className="text-2xl font-bold">Kaufland Receipts</h1>
+      <h1 className="text-2xl font-bold">Receipt Radar</h1>
       <p className="mb-6 text-muted-foreground">{receipts.length} receipt(s)</p>
 
       <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-2">

@@ -5,13 +5,13 @@ GrocyClient -- never the real one, never a live Grocy instance."""
 from datetime import datetime
 from decimal import Decimal
 
-from kaufland_receipts.grocy import (
+from receipt_radar.grocy import (
     create_product_and_map_and_push,
     push_receipt,
     resolve_mapping_and_push,
 )
-from kaufland_receipts.grocy_store import GrocyProductDefaults, GrocyStore
-from kaufland_receipts.models import LineItem, Receipt, Store
+from receipt_radar.grocy_store import GrocyProductDefaults, GrocyStore
+from receipt_radar.models import LineItem, Receipt, Store
 
 
 class _FakeGrocyClient:

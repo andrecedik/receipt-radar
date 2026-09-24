@@ -24,7 +24,7 @@ exported there, still with zero rebuild.
 ```sh
 # from the repo root, in one terminal — exports receipts.json + PDFs once,
 # then keeps re-exporting as you ingest new receipts (Ctrl+C to stop)
-uv run kaufland web-data --watch
+uv run receipt-radar web-data --watch
 
 cd web            # in another terminal
 nvm use           # if you use nvm — matches .nvmrc
@@ -47,7 +47,7 @@ Only needed to produce a static, deployable copy of the site (`../site/`)
 ```sh
 # from the repo root — exports web/public/data/receipts.json and copies
 # source PDFs into web/public/pdfs/ from the local receipt store
-uv run kaufland web-data
+uv run receipt-radar web-data
 
 cd web
 nvm use       # if you use nvm — matches .nvmrc
@@ -91,7 +91,7 @@ route configuration needed; any static file server works.
 ## Design notes
 
 - **Data**: fetched at runtime from `public/data/receipts.json` (gitignored
-  — regenerate with `kaufland web-data`), not bundled at build time — kept
+  — regenerate with `receipt-radar web-data`), not bundled at build time — kept
   out of the JS bundle so the shipped chunk size doesn't grow with every
   receipt ever ingested, and so new data shows up on refresh without a
   rebuild (see "Local development" above).

@@ -6,11 +6,11 @@ from decimal import Decimal
 
 from fastapi.testclient import TestClient
 
-from kaufland_receipts.grocy_client import GrocyLocation, GrocyProduct, GrocyQuantityUnit
-from kaufland_receipts.grocy_store import GrocyProductDefaults, GrocyStore
-from kaufland_receipts.models import LineItem, Receipt, Store
-from kaufland_receipts.server import create_app
-from kaufland_receipts.store import ReceiptStore
+from receipt_radar.grocy_client import GrocyLocation, GrocyProduct, GrocyQuantityUnit
+from receipt_radar.grocy_store import GrocyProductDefaults, GrocyStore
+from receipt_radar.models import LineItem, Receipt, Store
+from receipt_radar.server import create_app
+from receipt_radar.store import ReceiptStore
 
 
 def _client(tmp_path):
@@ -44,7 +44,7 @@ def _install_fake_parse_pdf(monkeypatch, *, receipt_id="r1", total="12.34", rais
             source_file=str(path),
         )
 
-    monkeypatch.setattr("kaufland_receipts.server.parse_pdf", fake_parse_pdf)
+    monkeypatch.setattr("receipt_radar.server.parse_pdf", fake_parse_pdf)
 
 
 def test_upload_adds_a_new_receipt(tmp_path, monkeypatch):
@@ -120,14 +120,14 @@ def test_upload_refreshes_the_web_data(tmp_path, monkeypatch):
 def test_static_mount_serves_index_html(tmp_path):
     web_dir = tmp_path / "web"
     (web_dir / "public").mkdir(parents=True)
-    (web_dir / "public" / "index.html").write_text("<h1>kaufland-receipts</h1>", encoding="utf-8")
+    (web_dir / "public" / "index.html").write_text("<h1>receipt-radar</h1>", encoding="utf-8")
     store = ReceiptStore(data_dir=tmp_path / "data")
     client = TestClient(create_app(store, web_dir))
 
     res = client.get("/")
 
     assert res.status_code == 200
-    assert "<h1>kaufland-receipts</h1>" in res.text
+    assert "<h1>receipt-radar</h1>" in res.text
 
 
 def test_static_mount_serves_nested_assets(tmp_path):
