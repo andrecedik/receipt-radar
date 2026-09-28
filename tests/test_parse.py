@@ -139,14 +139,24 @@ def test_dispatches_rewe_receipts_to_the_rewe_parser():
     assert r.totals_match()
 
 
+EDEKA_FIXTURE = (Path(__file__).parent / "fixtures" / "edeka_synthetic.txt").read_text("utf-8")
+
+
+def test_dispatches_edeka_receipts_to_the_edeka_parser():
+    r = parse_text(EDEKA_FIXTURE)
+    assert r.store.name == "EDEKA"
+    assert r.receipt_id.startswith("edeka-")
+    assert r.totals_match()
+
+
 def test_kaufland_receipts_still_parse_through_the_dispatcher():
     r = parse_text(FIXTURE)
     assert r.store.name == "Kaufland"
     assert r.receipt_id.startswith("kaufland-")
 
 
-def test_unrecognised_receipt_names_both_retailers():
-    with pytest.raises(ValueError, match="Kaufland or REWE"):
+def test_unrecognised_receipt_names_every_retailer():
+    with pytest.raises(ValueError, match="Kaufland, REWE or EDEKA"):
         parse_text("Some other shop\nSumme 5,00\nDatum:01.01.26 Zeit: 10:00:00 Bon:1")
 
 

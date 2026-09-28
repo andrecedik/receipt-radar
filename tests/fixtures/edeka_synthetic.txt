@@ -1,0 +1,48 @@
+Testmarkt Teststraße GmbH
+Teststraße 12
+12345 Teststadt
+Tel. 01234-567890
+www.testmarkt.de
+EUR
+TESTBROT 1,20 A
+TESTKAESE 2,08 AW
+TESTFOLIE 1,95 B
+kg x0,500 4,00
+TESTPAPRIKA 2,00 A
+€/kg
+2€ x 0,85TESTTUECHER 1,70 B
+3€ x 1,29TESTCOLA 0,5l 3,87 BW
+3€ x 0,25Pfand 0,75*B
+TESTSALAT 1,99 A
+SOFORTSTORNO
+TESTSALAT -1,99 A
+Coupon: 10000000
+----------Posten: 12
+SUMME € 13,55
+Visa 13,55€
+MwSt NETTO MwSt UMSATZ
+A 7% 4,93 0,35 5,28
+B 19% 6,95 1,32 8,27
+PAYBACK - ******0000
+Kunde - 000000000
+Für den Einkauf von 12,80 EUR auf
+rabattfähige Artikel erhalten Sie 12 °P.
+Punktestand nach Einkauf: 1.000 °P
+Punktestand entspricht: 10,00 EUR
+* Position nicht rabattberechtigt
+0000000000000000000000
+Es bediente Sie:
+Frau Test
+Datum Uhrzeit  Filiale Pos Bed Bon
+02.05.26 21:25 0200001 201 005 1770
+Steuernummer: DE 000000000
+TSE Transaktionsnummer: 100000
+TSE Seriennummer: 00AA00AA00AA00AA00AA00
+Seriennr. Kasse: NO-200001-4POS01
+Prüfwert: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Signaturzähler: 1000000
+2026-05-02T19:25:00.000Z2026-05-02T19:25
+:30.000Z
+Sammeln und zahlen Sie jetzt noch
+schneller, einfacher und ganz digital
+mit der Genuss+ App von EDEKA!

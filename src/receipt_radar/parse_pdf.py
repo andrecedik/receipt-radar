@@ -2,7 +2,8 @@
 
 :func:`parse_text` is the retailer dispatcher: it recognises which chain
 printed the receipt and hands off to that chain's parser -- REWE lives in
-:mod:`parse_rewe`; Kaufland's rules are the rest of this module.
+:mod:`parse_rewe`, EDEKA in :mod:`parse_edeka`; Kaufland's rules are the rest
+of this module.
 
 Kaufland's "als PDF speichern" export is a real text-layer PDF, so we extract
 text with :mod:`pypdf` (no OCR) and apply the layout rules below.
@@ -263,8 +264,8 @@ def parse_text(text: str, *, source_file: str | None = None, label: str = "recei
     Split out from :func:`parse_pdf` so the format logic is testable against a
     committed text fixture, with no PDF or filesystem involved.
 
-    Raises ``ValueError`` if the text is not a recognisable Kaufland or REWE
-    receipt or if the total/date cannot be found — better to fail loudly than
+    Raises ``ValueError`` if the text is not a recognisable Kaufland, REWE or
+    EDEKA receipt or if the total/date cannot be found — better to fail loudly than
     to store a half-parsed receipt.
     """
     # Kaufland receipts from before roughly July 2024 are exported by the app
@@ -281,14 +282,17 @@ def parse_text(text: str, *, source_file: str | None = None, label: str = "recei
             "parsed yet; receipts from July 2024 onward are text-based and work."
         )
 
-    # Imported here, not at module level: parse_rewe borrows the number/size
-    # helpers from this module, so a top-level import would be circular.
-    from . import parse_rewe
+    # Imported here, not at module level: parse_rewe and parse_edeka borrow
+    # the number/size helpers from this module, so a top-level import would
+    # be circular.
+    from . import parse_edeka, parse_rewe
 
     if parse_rewe.is_rewe(text):
         return parse_rewe.parse_text(text, source_file=source_file, label=label)
+    if parse_edeka.is_edeka(text):
+        return parse_edeka.parse_text(text, source_file=source_file, label=label)
     if not is_kaufland(text):
-        raise ValueError(f"{label}: does not look like a Kaufland or REWE receipt")
+        raise ValueError(f"{label}: does not look like a Kaufland, REWE or EDEKA receipt")
     return _parse_kaufland(text, source_file=source_file, label=label)
 
 

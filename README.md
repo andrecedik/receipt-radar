@@ -1,7 +1,7 @@
 # receipt-radar
 
-Turn your Kaufland digital receipts (Digitale Kassenbons) and REWE eBons
-into structured, self-hosted data. Find out whether that "sale" sticker is actually a better
+Turn your Kaufland digital receipts (Digitale Kassenbons), REWE eBons and
+EDEKA Kassenbons into structured, self-hosted data. Find out whether that "sale" sticker is actually a better
 price than what you already paid.
 
 > Unofficial and unaffiliated with Kaufland. This is a personal-data /
@@ -75,7 +75,7 @@ tells you whether it's a genuine reduction or a sale in name only.
 ### Total Spend Aggregation
 
 Every parsed receipt rolls up into a running spend total across every store
-you've fed receipts from. Kaufland and REWE today (see
+you've fed receipts from. Kaufland, REWE and EDEKA today (see
 [What it can't do yet](#what-it-cant-do-yet)); the data model and UI
 don't assume a single retailer.
 
@@ -92,11 +92,13 @@ resolved.
 
 ## What it can't do yet
 
-- **Kaufland and REWE only, German only.** The parsers handle the printed
-  formats of the Kaufland digital receipt and the REWE eBon (the
-  `stationary-ebon-<uuid>.pdf` download from the REWE app or rewe.de); no
-  other retailer is supported yet, and both chains only issue these in
-  Germany.
+- **Kaufland, REWE and EDEKA only, German only.** The parsers handle the
+  printed formats of the Kaufland digital receipt, the REWE eBon (the
+  `stationary-ebon-<uuid>.pdf` download from the REWE app or rewe.de) and
+  the EDEKA digital Kassenbon (the `Kassenbon_YYYY-MM-DD_HH.MM.pdf`
+  download); no other retailer is supported yet, and all three chains only
+  issue these in Germany. The EDEKA parser is built on two real receipts so
+  far — if yours doesn't reconcile, please open an issue.
 - **Only Kaufland receipts from July 2024 onward can be parsed.** Older ones are
   exported by the Kaufland app as its rendered "Receipt Copy" screen, an
   image-only PDF with no text layer (the switch happened in the second half
@@ -128,8 +130,8 @@ resolved.
 - Automated receipt sync: no more manual PDF export, once the app's
   certificate pinning is worked around
 - Home Assistant notification hook for genuine-discount alerts
-- Parsers for other German grocers (Edeka, Lidl), extending Total Spend
-  Aggregation beyond Kaufland and REWE
+- A Lidl parser, extending Total Spend Aggregation beyond Kaufland, REWE and
+  EDEKA
 
 **The bigger vision** — and honestly, the reason this project exists at all:
 grocery prices vary by store and region in ways no single shopper can see on
