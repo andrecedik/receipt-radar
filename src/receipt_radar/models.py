@@ -2,7 +2,8 @@
 
 This is the single shared shape that every ingestion path emits into:
 
-* the PDF pipeline (``parse_pdf.py``) — the route in use today, and
+* the PDF pipeline (``parse_pdf.py``) and the OCR'd-screenshot pipeline
+  (``ocr.py`` + ``parse_lidl.py``) — the routes in use today, and
 * a future auto-sync API client (see ``docs/api.md``) — not yet built.
 
 Keeping both paths on the same model means everything downstream (spending
@@ -60,8 +61,8 @@ class Receipt(BaseModel):
 
     # provenance — how this record was obtained, so we can tell PDF-parsed
     # receipts apart from API-fetched ones and re-parse just one source later.
-    source: str = "pdf"  # "pdf" | "api"
-    source_file: str | None = None  # path to the originating PDF, if source == "pdf"
+    source: str = "pdf"  # "pdf" | "image" (OCR'd screenshot) | "api"
+    source_file: str | None = None  # path to the originating PDF/image, if source != "api"
 
     # The Rabattaktion block's whole-cart, K-Card-linked, manually-activated
     # spend-threshold coupon (e.g. "save EUR 5 once your cart crosses EUR 50")

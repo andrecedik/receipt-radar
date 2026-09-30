@@ -1,0 +1,38 @@
+LIDL
+Teststraße 12
+12345 Teststadt
+EUR
+Testbrot 1,20 A
+Testbanane lose 1,55 A
+1,200 kg x 1,29 EUR/kg
+Testjoghurt 0,79 x 2 1,58 A
+Lidl Plus Rabatt -0,22
+Testkäse 2,49 A
+Preisvorteil -0,76
+Pfand 0,25 EM 0,25 x 2 0,50 B
+Testsaft 0,79 B
+zu zahlen 7,13
+Lidl Pay 7,13
+Gesamter Preisvorteil 0,98
+MWST% MWST + Netto = Brutto
+A 7 % 0,38 5,46 5,84
+B 19 % 0,21 1,08 1,29
+Summe 0,59 6,54 7,13
+TSE Transaktionsnummer: 1234567
+Seriennr. Kasse: LDL-000-5567-3
+Seriennr. TSE: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Prüfwert: BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+Signaturzähler: 2649840
+2026-01-05T08:36:19.000Z
+2026-01-05T08:36:32.000Z
+5567 511555/03 05.01.26 09:36
+UST-ID-NR: DE813810462
+Transaktionsnummer: DE556703511555005261
+VIELEN DANK FÜR DEINEN EINKAUF!
+Kostenlose Servicenummer:
+0800 5435 7587
+www.lidl.de
+Einkauf getätigt in
+Teststadt
+Teststr. 12
+12345 Teststadt

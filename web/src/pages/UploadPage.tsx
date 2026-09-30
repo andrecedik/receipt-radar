@@ -75,16 +75,16 @@ export function UploadPage() {
       <CardContent className="flex flex-col gap-4 pt-6">
         <input
           type="file"
-          accept="application/pdf"
+          accept="application/pdf,image/png,image/jpeg"
           multiple
-          aria-label="Receipt PDFs"
+          aria-label="Receipt files"
           disabled={uploading}
           onChange={(e) => handleSelect(e.target.files)}
         />
         <p className="text-sm text-muted-foreground">
-          Receipts from July 2024 onward work. Older ones are exported by the
-          Kaufland app as image-only PDFs with no text layer and will be
-          rejected.
+          Kaufland, REWE and EDEKA receipts as PDFs (Kaufland from July 2024
+          onward; older ones are image-only PDFs and will be rejected). Lidl
+          receipts as the PNG screenshot the Lidl app exports.
         </p>
         <Button onClick={handleUpload} disabled={rows.length === 0 || uploading}>
           {uploading ? "Uploading..." : "Upload receipts"}

@@ -10,7 +10,7 @@ import typer
 import uvicorn
 
 from . import export as export_mod
-from .parse_pdf import parse_pdf
+from .parse import is_supported, parse_file
 from .server import create_app
 from .store import ReceiptStore
 from .watch import DEFAULT_WATCH_DIR, scan_once
@@ -27,18 +27,18 @@ def _store() -> ReceiptStore:
 
 @app.command()
 def ingest(
-    path: Path = typer.Argument(..., help="A receipt PDF, or a folder of them."),
+    path: Path = typer.Argument(..., help="A receipt PDF or screenshot, or a folder of them."),
     overwrite: bool = typer.Option(
         False, help="Reparse and replace receipts already in the store (e.g. after a parser update)."
     ),
 ):
-    """Parse one PDF (or every PDF in a folder) into the local store."""
+    """Parse one receipt file (or every receipt in a folder) into the local store."""
     store = _store()
-    pdfs = sorted(path.glob("*.pdf")) if path.is_dir() else [path]
+    pdfs = sorted(p for p in path.iterdir() if is_supported(p)) if path.is_dir() else [path]
     added = skipped = failed = 0
     for pdf in pdfs:
         try:
-            receipt = parse_pdf(pdf)
+            receipt = parse_file(pdf)
         except Exception as exc:
             typer.secho(f"  ✗ {pdf.name}: {exc}", fg=typer.colors.RED)
             failed += 1
@@ -76,7 +76,7 @@ def watch(
     if not once:
         typer.echo(f"Watching {folder} (every {interval:.0f}s, Ctrl+C to stop)")
     while True:
-        seen = len(list(folder.glob("*.pdf")))
+        seen = len([p for p in folder.iterdir() if is_supported(p)])
         added, errors = scan_once(store, folder)
         for name, msg in errors:
             typer.secho(f"  ✗ {name}: {msg}", fg=typer.colors.RED)
@@ -84,7 +84,7 @@ def watch(
             typer.secho(f"  + {rid}", fg=typer.colors.GREEN)
         if not added and not errors:
             stamp = f"[{time.strftime('%H:%M:%S')}] " if not once else ""
-            typer.echo(f"{stamp}scanned {seen} PDF(s) in {folder.name}, nothing new")
+            typer.echo(f"{stamp}scanned {seen} file(s) in {folder.name}, nothing new")
         if once:
             break
         time.sleep(interval)

@@ -15,7 +15,7 @@ from __future__ import annotations
 import time
 from pathlib import Path
 
-from .parse_pdf import parse_pdf
+from .parse import is_supported, parse_file
 from .store import ReceiptStore
 
 DEFAULT_WATCH_DIR = (
@@ -37,9 +37,9 @@ def scan_once(
     """
     added: list[str] = []
     errors: list[tuple[str, str]] = []
-    for pdf in sorted(watch_dir.glob("*.pdf")):
+    for pdf in sorted(p for p in watch_dir.iterdir() if is_supported(p)):
         try:
-            receipt = parse_pdf(pdf)
+            receipt = parse_file(pdf)
         except Exception as exc:  # parsing is best-effort per file
             errors.append((pdf.name, str(exc)))
             continue

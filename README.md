@@ -92,18 +92,29 @@ resolved.
 
 ## What it can't do yet
 
-- **Kaufland, REWE and EDEKA only, German only.** The parsers handle the
+- **Kaufland, REWE, EDEKA and Lidl, German only.** The parsers handle the
   printed formats of the Kaufland digital receipt, the REWE eBon (the
   `stationary-ebon-<uuid>.pdf` download from the REWE app or rewe.de) and
   the EDEKA digital Kassenbon (the `Kassenbon_YYYY-MM-DD_HH.MM.pdf`
-  download); no other retailer is supported yet, and all three chains only
-  issue these in Germany. The EDEKA parser is built on two real receipts so
+  download, plus Lidl's receipt screenshot (see below); no other retailer is
+  supported yet, and all four chains are built against German receipts. The EDEKA parser is built on two real receipts so
   far — if yours doesn't reconcile, please open an issue.
-- **Only Kaufland receipts from July 2024 onward can be parsed.** Older ones are
+- **Only Kaufland receipts from July 2024 onward can be parsed.** (Lidl is the exception to "no OCR": see the next item.) Older ones are
   exported by the Kaufland app as its rendered "Receipt Copy" screen, an
   image-only PDF with no text layer (the switch happened in the second half
   of June 2024). The parser is text-based (no OCR), so it rejects those with
   a clear error instead of guessing.
+- **Lidl works from the app's screenshot export, via OCR.** The Lidl app has
+  no PDF export: "export receipt" shares one tall PNG. Upload that PNG (or
+  drop it in the watch folder, or `receipt-radar ingest` it). Text is read
+  with Tesseract (bundled in the Docker image with German + English packs;
+  native installs need `tesseract` and its `deu` pack) and cross-checked
+  across several independent readings against the receipt's own totals,
+  tax table and printed savings. A receipt that doesn't reconcile is rejected
+  with a reason, never stored with guessed prices. Item names are the least
+  reliable field. Other countries' language packs aren't bundled; set
+  `RECEIPT_RADAR_OCR_LANGS` to use ones you've installed. See
+  `docs/adr/0008-lidl-via-ocr-of-app-screenshots.md`.
 - **No automatic sync.** The Kaufland app has no public API, and the host
   that serves digital receipts is certificate-pinned. Receipts have to be
   exported as PDFs by hand (from the app, or via the browser Upload page)

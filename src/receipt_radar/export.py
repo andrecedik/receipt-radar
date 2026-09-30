@@ -108,7 +108,13 @@ def export_web_data(receipts: list[Receipt], web_dir: Path) -> tuple[int, int]:
     verdicts = compute_verdicts(receipts)
     for r in receipts:
         record = r.model_dump(mode="json")
-        pdf_available = bool(r.source_file and Path(r.source_file).exists())
+        # Only PDFs are served back as the original: a screenshot source has
+        # nothing to open in the PDF viewer the UI links to.
+        pdf_available = bool(
+            r.source_file
+            and Path(r.source_file).suffix.lower() == ".pdf"
+            and Path(r.source_file).exists()
+        )
         record["pdf_available"] = pdf_available
         for index, verdict in verdicts.get(r.receipt_id, {}).items():
             record["line_items"][index]["price_verdict"] = verdict.model_dump(mode="json")

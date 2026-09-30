@@ -48,6 +48,10 @@ _Avoid_: Users, customers (when the self-hosted/HA-specific audience is meant)
 One retailer chain's receipt layout, expressed as the ability to recognise that chain's receipts and read them into line items that reconcile against the printed total. One per chain — supporting a new retailer means adding one, not changing the existing ones.
 _Avoid_: Parser (unqualified, when a specific retailer's module is meant), retailer support
 
+**OCR Reading**:
+One independent Tesseract pass over a receipt screenshot (a language pack x a page-segmentation mode). A single reading is never trusted: it can be wrong in a way that still reconciles, so a receipt is stored only when at least two readings reconcile and every reconciling one agrees on all amounts. See `docs/adr/0008-lidl-via-ocr-of-app-screenshots.md`.
+_Avoid_: OCR result, scan
+
 **Receipt Source**:
 Where a receipt reaches the tool from. A Retailer Parser over a PDF the user exported themselves is always a retailer's base source; a vendor API (Lidl Plus, Kaufland's receipt endpoints) is an accelerator added on top of one, never instead of it — an API can be withdrawn or have its auth broken from outside, an already-exported receipt cannot. See `docs/adr/0006-retailer-breadth-is-the-conversion-lever.md`.
 _Avoid_: Integration, ingestion path (when the durability ordering is the point)
@@ -57,7 +61,7 @@ The Mac-native ingestion path — `receipt-radar watch` polls a local iCloud Dri
 _Avoid_: Watcher, ingestion (when a specific mechanism is meant)
 
 **Web Upload**:
-The Docker/NAS-native ingestion path — selecting one or more receipt PDFs into the web UI's file picker. Chosen as the primary ingestion mechanism for the Initial Target Audience because it works identically regardless of host OS/NAS platform, unlike Folder Watch. PDF-only, matching Folder Watch and `parse_pdf`; PNG was an earlier aspiration never built and is not currently planned.
+The Docker/NAS-native ingestion path — selecting one or more receipt PDFs into the web UI's file picker. Chosen as the primary ingestion mechanism for the Initial Target Audience because it works identically regardless of host OS/NAS platform, unlike Folder Watch. Accepts PDFs and, for retailers whose app only exports a screenshot (Lidl), PNG/JPEG, which go through OCR (see **OCR Reading**).
 _Avoid_: Upload feature
 
 **Analytics Surface**:

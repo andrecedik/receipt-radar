@@ -29,7 +29,7 @@ describe("UploadPage", () => {
   it("renders a pending row for each selected file", () => {
     render(<UploadPage />)
 
-    selectFiles(screen.getByLabelText("Receipt PDFs"), [
+    selectFiles(screen.getByLabelText("Receipt files"), [
       makePdf("receipt-1.pdf"),
       makePdf("receipt-2.pdf"),
     ])
@@ -52,7 +52,7 @@ describe("UploadPage", () => {
       })
       .mockResolvedValueOnce({ ok: true, json: async () => [] })
     render(<UploadPage />)
-    selectFiles(screen.getByLabelText("Receipt PDFs"), [
+    selectFiles(screen.getByLabelText("Receipt files"), [
       makePdf("receipt-1.pdf"),
       makePdf("receipt-2.pdf"),
     ])
@@ -82,7 +82,7 @@ describe("UploadPage", () => {
       })
       .mockResolvedValueOnce({ ok: true, json: async () => [] })
     render(<UploadPage />)
-    selectFiles(screen.getByLabelText("Receipt PDFs"), [
+    selectFiles(screen.getByLabelText("Receipt files"), [
       makePdf("bad.pdf"),
       makePdf("receipt-2.pdf"),
     ])
@@ -108,7 +108,7 @@ describe("UploadPage", () => {
       })
       .mockResolvedValueOnce({ ok: true, json: async () => [] })
     render(<UploadPage />)
-    selectFiles(screen.getByLabelText("Receipt PDFs"), [makePdf("receipt-1.pdf")])
+    selectFiles(screen.getByLabelText("Receipt files"), [makePdf("receipt-1.pdf")])
 
     fireEvent.click(screen.getByRole("button", { name: /upload receipts/i }))
 
@@ -125,7 +125,7 @@ describe("UploadPage", () => {
       })
       .mockRejectedValueOnce(new Error("network down"))
     render(<UploadPage />)
-    selectFiles(screen.getByLabelText("Receipt PDFs"), [makePdf("receipt-1.pdf")])
+    selectFiles(screen.getByLabelText("Receipt files"), [makePdf("receipt-1.pdf")])
 
     fireEvent.click(screen.getByRole("button", { name: /upload receipts/i }))
 
@@ -147,7 +147,7 @@ describe("UploadPage", () => {
       .mockReturnValueOnce(second.promise)
       .mockResolvedValueOnce({ ok: true, json: async () => [] })
     render(<UploadPage />)
-    selectFiles(screen.getByLabelText("Receipt PDFs"), [
+    selectFiles(screen.getByLabelText("Receipt files"), [
       makePdf("receipt-1.pdf"),
       makePdf("receipt-2.pdf"),
     ])

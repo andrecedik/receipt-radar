@@ -19,7 +19,7 @@ from . import export as export_mod
 from .grocy import create_product_and_map_and_push, push_receipt, resolve_mapping_and_push
 from .grocy_client import GrocyClient
 from .grocy_store import GrocyProductDefaults, GrocyStore, push_readiness
-from .parse_pdf import parse_pdf
+from .parse import is_supported, parse_file
 from .store import ReceiptStore
 
 
@@ -48,11 +48,11 @@ def create_app(
 
     @app.post("/api/upload")
     async def upload(file: UploadFile = File(...)) -> dict[str, str]:
-        if not (file.filename or "").lower().endswith(".pdf"):
-            raise HTTPException(422, detail="Only PDF files are supported.")
+        if not is_supported(file.filename or ""):
+            raise HTTPException(422, detail="Only PDF, PNG and JPEG files are supported.")
 
         # Persisted under a unique name (not the original filename) so two
-        # uploads that happen to share a name never collide; parse_pdf reads
+        # uploads that happen to share a name never collide; parse_file reads
         # from this final path, so `Receipt.source_file` points here for
         # good, matching what export_web_data expects downstream.
         uploads_dir.mkdir(parents=True, exist_ok=True)
@@ -60,7 +60,7 @@ def create_app(
         dest.write_bytes(await file.read())
 
         try:
-            receipt = parse_pdf(dest)
+            receipt = parse_file(dest)
         except Exception as exc:
             raise HTTPException(422, detail=str(exc)) from exc
 

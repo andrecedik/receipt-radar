@@ -28,11 +28,11 @@ def test_health_check(tmp_path):
     assert res.json() == {"status": "ok"}
 
 
-def _install_fake_parse_pdf(monkeypatch, *, receipt_id="r1", total="12.34", raises=None):
-    """Stand in for the real parse_pdf: mirrors its contract of setting
+def _install_fake_parse_file(monkeypatch, *, receipt_id="r1", total="12.34", raises=None):
+    """Stand in for the real parse_file: mirrors its contract of setting
     source_file to the path it was given, without touching a real PDF."""
 
-    def fake_parse_pdf(path):
+    def fake_parse_file(path):
         if raises is not None:
             raise raises
         return Receipt(
@@ -44,12 +44,12 @@ def _install_fake_parse_pdf(monkeypatch, *, receipt_id="r1", total="12.34", rais
             source_file=str(path),
         )
 
-    monkeypatch.setattr("receipt_radar.server.parse_pdf", fake_parse_pdf)
+    monkeypatch.setattr("receipt_radar.server.parse_file", fake_parse_file)
 
 
 def test_upload_adds_a_new_receipt(tmp_path, monkeypatch):
     client, store = _client(tmp_path)
-    _install_fake_parse_pdf(monkeypatch, receipt_id="r1", total="12.34")
+    _install_fake_parse_file(monkeypatch, receipt_id="r1", total="12.34")
 
     res = client.post(
         "/api/upload", files={"file": ("receipt.pdf", b"fake pdf bytes", "application/pdf")}
@@ -62,7 +62,7 @@ def test_upload_adds_a_new_receipt(tmp_path, monkeypatch):
 
 def test_upload_is_idempotent(tmp_path, monkeypatch):
     client, store = _client(tmp_path)
-    _install_fake_parse_pdf(monkeypatch, receipt_id="r1", total="12.34")
+    _install_fake_parse_file(monkeypatch, receipt_id="r1", total="12.34")
     client.post("/api/upload", files={"file": ("receipt.pdf", b"fake pdf bytes", "application/pdf")})
 
     res = client.post(
@@ -74,7 +74,7 @@ def test_upload_is_idempotent(tmp_path, monkeypatch):
     assert len(store.all()) == 1
 
 
-def test_upload_rejects_a_non_pdf(tmp_path):
+def test_upload_rejects_an_unsupported_file_type(tmp_path):
     client, store = _client(tmp_path)
 
     res = client.post(
@@ -85,9 +85,22 @@ def test_upload_rejects_a_non_pdf(tmp_path):
     assert store.all() == []
 
 
+def test_upload_accepts_a_png_screenshot(tmp_path, monkeypatch):
+    client, store = _client(tmp_path)
+    _install_fake_parse_file(monkeypatch, receipt_id="lidl-1", total="3.83")
+
+    res = client.post(
+        "/api/upload", files={"file": ("PNG image-ABC-1.png", b"fake png bytes", "image/png")}
+    )
+
+    assert res.status_code == 200
+    assert res.json()["status"] == "added"
+    assert [r.receipt_id for r in store.all()] == ["lidl-1"]
+
+
 def test_upload_reports_a_parse_failure(tmp_path, monkeypatch):
     client, store = _client(tmp_path)
-    _install_fake_parse_pdf(monkeypatch, raises=ValueError("not a Kaufland receipt"))
+    _install_fake_parse_file(monkeypatch, raises=ValueError("not a Kaufland receipt"))
 
     res = client.post(
         "/api/upload", files={"file": ("receipt.pdf", b"fake pdf bytes", "application/pdf")}
@@ -101,7 +114,7 @@ def test_upload_reports_a_parse_failure(tmp_path, monkeypatch):
 def test_upload_refreshes_the_web_data(tmp_path, monkeypatch):
     client, _store = _client(tmp_path)
     web_dir = tmp_path / "web"
-    _install_fake_parse_pdf(monkeypatch, receipt_id="r1", total="12.34")
+    _install_fake_parse_file(monkeypatch, receipt_id="r1", total="12.34")
 
     client.post("/api/upload", files={"file": ("receipt.pdf", b"fake pdf bytes", "application/pdf")})
 
@@ -111,7 +124,7 @@ def test_upload_refreshes_the_web_data(tmp_path, monkeypatch):
     assert len(data) == 1
     assert data[0]["receipt_id"] == "r1"
 
-    # source_file (see _install_fake_parse_pdf) points at the real bytes the
+    # source_file (see _install_fake_parse_file) points at the real bytes the
     # endpoint persisted under store.data_dir/uploads/ before parsing, so
     # export_web_data finds a real file to copy here -- not a fake.
     assert (web_dir / "public" / "pdfs" / "r1.pdf").exists()

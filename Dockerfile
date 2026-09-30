@@ -12,6 +12,13 @@ RUN npm run build
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 WORKDIR /app
 
+# Tesseract reads image receipts (the Lidl app exports a stitched PNG). Only
+# the German and English packs are bundled; other countries' packs are an
+# opt-in (see ocr.py, RECEIPT_RADAR_OCR_LANGS).
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends tesseract-ocr tesseract-ocr-deu tesseract-ocr-eng \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY pyproject.toml uv.lock README.md ./
 RUN uv sync --frozen --no-dev --no-install-project
 COPY src/ ./src/
